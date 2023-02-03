@@ -91,7 +91,73 @@ namespace DogsVsCats
             // アプリケーションの終了
             this.Close();
         }
+        /// <summary>
+        ///  //DrawingPathはパスを使って図形を書く MouseLeftButtonDownはこの要素の上にマウス ポインターがある状態でマウスの左ボタンが押されたときに発生します
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawingPath_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var path = sender as Path;
+            if (path == null)
+                return;
 
+            // 開始座標を取得
+            var point = e.GetPosition(path);
+            _position = point;
+
+            // マウスキャプチャの設定
+            _trimEnable = true;
+            this.Cursor = Cursors.Cross;
+            path.CaptureMouse();
+        }
+
+        /// <summary>
+        /// DrawingPathはパスを使って図形を書く MouseLeftButtonDownはこの要素の上にマウス ポインターがある状態でマウスの左ボタンが離されたときに発生します。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawingPath_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var path = sender as Path;
+            if (path == null)
+                return;
+
+            // 現在座標を取得
+            var point = e.GetPosition(path);
+
+            // マウスキャプチャの終了
+            _trimEnable = false;
+            this.Cursor = Cursors.Arrow;
+            path.ReleaseMouseCapture();
+
+            // 画面キャプチャ
+            CaptureScreen(point);
+
+            // アプリケーションの終了
+            this.Close();
+        }
+
+        /// <summary>
+        /// DrawingPathはパスを使って図形を書く MouseMoveはマウスがコントロール上を移動すると発生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DrawingPath_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_trimEnable)
+                return;
+
+            var path = sender as Path;
+            if (path == null)
+                return;
+
+            // 現在座標を取得
+            var point = e.GetPosition(path);
+
+            // キャプチャ領域枠の描画
+            DrawStroke(point);
+        }
 
         /// <summary>
         /// 指定されている画面領域を描写
@@ -139,7 +205,7 @@ namespace DogsVsCats
                 // string folder = "C:\\Users\\2227000\\Desktop\\C#\\Memo\\image\\";
                 try
                 {
-                    bmp.Save(System.IO.Path.ChangeExtension(System.IO.Path.Combine(folder, "QRimage"), "png"), System.Drawing.Imaging.ImageFormat.Png);
+                    bmp.Save(System.IO.Path.ChangeExtension(System.IO.Path.Combine(folder, "Trimimage"), "jpg"), System.Drawing.Imaging.ImageFormat.Png);
                     bmp.Dispose();
                 }
                 catch (System.Runtime.InteropServices.ExternalException)
