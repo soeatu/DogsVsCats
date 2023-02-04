@@ -4,10 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DogsVsCats"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="160" Width="200">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="102,52,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Button            
+            Grid.Row="0"
+            Content="CAPTURE"
+            Margin="10"
+            IsEnabled="{Binding DataContext.ControlsEnabled,
+            RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}"
+            Style="{StaticResource MaterialDesignPaperLightButton}"
+            ToolTip="Resource name: MaterialDesignPaperLightButton" Click="Button_Click" />
+        <TextBox
+            Name="ResultTextBox"
+            Margin="10"
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            materialDesign:HintAssist.Hint="判別結果"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
     </Grid>
 </Window>

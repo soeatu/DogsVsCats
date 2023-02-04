@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DogsVsCats
 {
@@ -23,7 +10,7 @@ namespace DogsVsCats
     public partial class MainWindow : Window
     {
         //Esc検知用
-        public bool _esc_flg = false;
+        public bool Esc_flg = false;
 
         public MainWindow()
         {
@@ -34,10 +21,10 @@ namespace DogsVsCats
         {            
             TrimScreen trimScreen = new TrimScreen();
             trimScreen.ShowDialog();//スクリーンショット処理開始
-            _esc_flg = trimScreen._esc_flg;            
+            Esc_flg = trimScreen.ESC_Flg;            
 
-            //Escキーフラグ検知でQRReaderの処理を行わない
-            if (!_esc_flg)
+            //Escキーフラグ検知で処理を行わない
+            if (!Esc_flg)
             {
                 string folder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var imageBytes = File.ReadAllBytes(folder + "\\TrimImage.jpg");
@@ -47,14 +34,11 @@ namespace DogsVsCats
                 };
 
                 //Load model and predict output
-                var result = DogVsCatClassfication.Predict(sampleData);                            
+                var result = DogVsCatClassfication.Predict(sampleData);
 
-            }
-            else
-            {
-               
-            }
-        }
-
+                //判別結果　表示
+                ResultTextBox.Text = result.PredictedLabel;
+            }        
+        }     
     }
 }

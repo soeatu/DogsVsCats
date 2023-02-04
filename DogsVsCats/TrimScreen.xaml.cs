@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace DogsVsCats
@@ -22,7 +14,7 @@ namespace DogsVsCats
     {
         private Point _position;
         private bool _trimEnable = false;
-        public bool _esc_flg = false;
+        public bool ESC_Flg = false;
 
         public TrimScreen()
         {
@@ -51,16 +43,15 @@ namespace DogsVsCats
             if (e.Key == Key.Escape)
             {
                 //EscキーフラグをTure
-                _esc_flg = true;
-                Close();
+                ESC_Flg = true;
+                this.Close();
             }
         }
         private void Hand_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var path = sender as Path;
-            if (path == null)
-                return;
-
+            if (path == null) { return; }
+                
             // 開始座標を取得
             var point = e.GetPosition(path);
             _position = point;
@@ -74,8 +65,7 @@ namespace DogsVsCats
         private void Hand_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var path = sender as Path;
-            if (path == null)
-                return;
+            if (path == null) { return; }                
 
             // 現在座標を取得
             var point = e.GetPosition(path);
@@ -99,8 +89,7 @@ namespace DogsVsCats
         private void DrawingPath_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var path = sender as Path;
-            if (path == null)
-                return;
+            if (path == null) { return; }               
 
             // 開始座標を取得
             var point = e.GetPosition(path);
@@ -120,8 +109,7 @@ namespace DogsVsCats
         private void DrawingPath_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var path = sender as Path;
-            if (path == null)
-                return;
+            if (path == null) { return; }                
 
             // 現在座標を取得
             var point = e.GetPosition(path);
@@ -145,12 +133,10 @@ namespace DogsVsCats
         /// <param name="e"></param>
         private void DrawingPath_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!_trimEnable)
-                return;
+            if (!_trimEnable) { return; }
 
             var path = sender as Path;
-            if (path == null)
-                return;
+            if (path == null) { return; }               
 
             // 現在座標を取得
             var point = e.GetPosition(path);
@@ -188,10 +174,7 @@ namespace DogsVsCats
             var y = start.Y < end.Y ? (int)start.Y : (int)end.Y;
             var width = (int)Math.Abs(end.X - start.X);
             var height = (int)Math.Abs(end.Y - start.Y);
-            if (width == 0 || height == 0)
-            {
-                return;
-            }
+            if (width == 0 || height == 0) { return; }
 
             // スクリーンイメージの取得
             using (var bmp = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb))
@@ -201,11 +184,10 @@ namespace DogsVsCats
                 graph.CopyFromScreen(new System.Drawing.Point(x, y), new System.Drawing.Point(), bmp.Size);
 
                 // イメージの保存
-                string folder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                // string folder = "C:\\Users\\2227000\\Desktop\\C#\\Memo\\image\\";
+                string exeFolder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);               
                 try
                 {
-                    bmp.Save(System.IO.Path.ChangeExtension(System.IO.Path.Combine(folder, "Trimimage"), "jpg"), System.Drawing.Imaging.ImageFormat.Png);
+                    bmp.Save(System.IO.Path.ChangeExtension(System.IO.Path.Combine(exeFolder, "Trimimage"), "jpg"), System.Drawing.Imaging.ImageFormat.Png);
                     bmp.Dispose();
                 }
                 catch (System.Runtime.InteropServices.ExternalException)
