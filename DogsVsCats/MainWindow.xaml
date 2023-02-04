@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DogsVsCats"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="160" Width="200">
+        Title="" Height="160" Width="200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
